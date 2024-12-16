@@ -8,11 +8,11 @@ import (
 )
 
 func AppendAttrsToGroup(groups []string, actualAttrs []slog.Attr, newAttrs ...slog.Attr) []slog.Attr {
-	actualAttrs = slices.Clone(actualAttrs)
-
 	if len(groups) == 0 {
 		return UniqAttrs(append(actualAttrs, newAttrs...))
 	}
+
+	actualAttrs = slices.Clone(actualAttrs)
 
 	for i := range actualAttrs {
 		attr := actualAttrs[i]
