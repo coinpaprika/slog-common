@@ -35,28 +35,5 @@ func AppendAttrsToGroup(groups []string, actualAttrs []slog.Attr, newAttrs ...sl
 
 // @TODO: should be recursive
 func UniqAttrs(attrs []slog.Attr) []slog.Attr {
-	return uniqByLast(attrs, func(item slog.Attr) string {
-		return item.Key
-	})
-}
-
-func uniqByLast[T any, U comparable](collection []T, iteratee func(item T) U) []T {
-	result := make([]T, 0, len(collection))
-	seen := make(map[U]int, len(collection))
-	seenIndex := 0
-
-	for _, item := range collection {
-		key := iteratee(item)
-
-		if index, ok := seen[key]; ok {
-			result[index] = item
-			continue
-		}
-
-		seen[key] = seenIndex
-		seenIndex++
-		result = append(result, item)
-	}
-
-	return result
+	return slices.CompactFunc(attrs, func(a slog.Attr, b slog.Attr) bool { return a.Key == b.Key })
 }
