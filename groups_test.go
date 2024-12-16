@@ -58,3 +58,17 @@ func TestAppendAttrsToGroup(t *testing.T) {
 		})
 	}
 }
+
+func BenchmarkAppendAttrsToGroup(b *testing.B) {
+	b.Run("empty", func(b *testing.B) {
+		var (
+			groups      = []string{}
+			actualAttrs = []slog.Attr{slog.String("key1", "value1")}
+			newAttrs    = []slog.Attr{slog.String("key2", "value2")}
+		)
+		for i := 0; i < b.N; i++ {
+			actual := AppendAttrsToGroup(groups, actualAttrs, newAttrs...)
+			_ = actual
+		}
+	})
+}
