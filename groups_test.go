@@ -59,6 +59,14 @@ func TestAppendAttrsToGroup(t *testing.T) {
 	}
 }
 
+func BenchmarkUniqAttrs(b *testing.B) {
+	var actualAttrs = []slog.Attr{slog.String("key1", "value1"), slog.String("key1", "value1"), slog.String("key2", "value2")}
+	for i := 0; i < b.N; i++ {
+		unique := UniqAttrs(actualAttrs)
+		_ = unique
+	}
+}
+
 func BenchmarkAppendAttrsToGroup(b *testing.B) {
 	b.Run("empty", func(b *testing.B) {
 		var (
